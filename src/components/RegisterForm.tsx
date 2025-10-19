@@ -3,7 +3,7 @@ import { useState } from 'react'
 import api from '@/utils/api'
 
 interface RegisterFormProps {
-  onSuccess: (user: any) => void
+  onSuccess: (user: { id: number; username: string }) => void
 }
 
 export default function RegisterForm({ onSuccess }: RegisterFormProps) {
@@ -21,14 +21,10 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
       const response = await api.post('/auth/register/', {
         username,
         password
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
       })
       onSuccess(response.data.user)
-    } catch (error: any) {
-      setError(error.response?.data?.error || 'Registration failed')
+    } catch (err: unknown) {
+      setError((err as { response?: { data?: { error?: string } } })?.response?.data?.error || 'Registration failed')
     } finally {
       setLoading(false)
     }

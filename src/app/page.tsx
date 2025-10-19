@@ -26,7 +26,7 @@ export default function Home() {
       if (response.data.authenticated) {
         setUser(response.data.user)
       }
-    } catch (error) {
+    } catch {
       console.error('Auth check failed')
     }
   }
@@ -42,9 +42,8 @@ export default function Home() {
       console.log('Logout successful')
       setUser(null)
       setShowCreatePost(false)
-    } catch (error: any) {
-      console.error('Logout failed:', error)
-      console.error('Logout error details:', error.response?.data)
+    } catch {
+      console.error('Logout failed')
     }
   }
 

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import api from '@/utils/api'
 
 interface LoginFormProps {
-  onSuccess: (user: any) => void
+  onSuccess: (user: { id: number; username: string }) => void
 }
 
 export default function LoginForm({ onSuccess }: LoginFormProps) {
@@ -21,14 +21,10 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
       const response = await api.post('/auth/login/', {
         username,
         password
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
       })
       onSuccess(response.data.user)
-    } catch (error: any) {
-      setError(error.response?.data?.error || 'Login failed')
+    } catch (err: unknown) {
+      setError((err as { response?: { data?: { error?: string } } })?.response?.data?.error || 'Login failed')
     } finally {
       setLoading(false)
     }

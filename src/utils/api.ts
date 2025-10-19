@@ -15,7 +15,7 @@ export const getCSRFToken = async () => {
       withCredentials: true 
     })
     return response.data.csrfToken
-  } catch (error) {
+  } catch {
     console.log('CSRF token fetch failed')
     return null
   }
@@ -26,13 +26,9 @@ api.interceptors.request.use(
   async (config) => {
     // For write operations, ensure we have CSRF token
     if (['post', 'put', 'delete', 'patch'].includes(config.method?.toLowerCase() || '')) {
-      try {
-        const csrfToken = await getCSRFToken()
-        if (csrfToken) {
-          config.headers['X-CSRFToken'] = csrfToken
-        }
-      } catch (error) {
-        console.log('Could not get CSRF token, continuing anyway')
+      const csrfToken = await getCSRFToken()
+      if (csrfToken) {
+        config.headers['X-CSRFToken'] = csrfToken
       }
     }
     return config

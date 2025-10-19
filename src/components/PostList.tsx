@@ -46,8 +46,8 @@ export default function PostList({ user }: PostListProps) {
     try {
       const response = await api.get('/posts/')
       setPosts(response.data)
-    } catch (error: any) {
-      console.error('Failed to fetch posts:', error.response?.data || error.message)
+    } catch (err: unknown) {
+      console.error('Failed to fetch posts:', (err as { response?: { data?: unknown } })?.response?.data || 'Unknown error')
     } finally {
       setLoading(false)
     }
@@ -57,8 +57,8 @@ export default function PostList({ user }: PostListProps) {
     try {
       await api.post(`/posts/${postId}/like/`)
       fetchPosts() // Refresh posts to update like status
-    } catch (error: any) {
-      console.error('Failed to like post:', error.response?.data || error.message)
+    } catch (err: unknown) {
+      console.error('Failed to like post:', (err as { response?: { data?: unknown } })?.response?.data || 'Unknown error')
     }
   }
 
@@ -67,8 +67,8 @@ export default function PostList({ user }: PostListProps) {
       try {
         await api.delete(`/posts/${postId}/`)
         fetchPosts() // Refresh posts
-      } catch (error: any) {
-        console.error('Failed to delete post:', error.response?.data || error.message)
+      } catch (err: unknown) {
+        console.error('Failed to delete post:', (err as { response?: { data?: unknown } })?.response?.data || 'Unknown error')
       }
     }
   }
@@ -91,8 +91,8 @@ export default function PostList({ user }: PostListProps) {
       })
       setEditingPost(null)
       fetchPosts() // Refresh posts
-    } catch (error: any) {
-      console.error('Failed to update post:', error.response?.data || error.message)
+    } catch (err: unknown) {
+      console.error('Failed to update post:', (err as { response?: { data?: unknown } })?.response?.data || 'Unknown error')
     }
   }
 

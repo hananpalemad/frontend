@@ -45,10 +45,9 @@ export default function CreatePost({ onClose, onPostCreated }: CreatePostProps) 
       
       console.log('Post created successfully:', response.data)
       onPostCreated()
-    } catch (error: any) {
-      console.error('Failed to create post:', error)
-      console.error('Error details:', error.response?.data)
-      setError(error.response?.data?.error || error.response?.data?.message || 'Failed to create post. Please try again.')
+    } catch (err: unknown) {
+      console.error('Failed to create post:', err)
+      setError('Failed to create post. Please try again.')
     } finally {
       setLoading(false)
     }
